@@ -1,6 +1,7 @@
 const fs = require('fs');
+/*
 fs.readFile('07.File/tmp/from.txt','utf8',(err, data)=>{
-    const txt = data.replace(/\r/g, '').split('\n')
+    const txt = data.replace(/\r/g, '').split('\n')  // \r은 윈도우에만 있음.
     let result = '';
     for (let i=0; i <= txt.length-1; i++) {
         for (let k=0; k <= i; k++) {
@@ -16,62 +17,22 @@ fs.readFile('07.File/tmp/from.txt','utf8',(err, data)=>{
         });
     });
 });
+ */
 
-
-/* function readFilePromise(path) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path, 'utf8', (err, data) => {
-            if (err)
-                reject(err);
-            else
-                resolve(data);
-        });
+fs.readFile('07.File/tmp/from.txt','utf8',(err, data) => {
+    const dataArray = data.split('\n').map(s => s.trim()); // \r 지우는 것
+    let output = '';
+    dataArray.forEach((item, index) => {
+        line = '';
+        for (let i=0; i<index+1; i++) {
+            line += item;
+        }
+        output = dataArray.length-1 == index 
+                ? output + line
+                : output + line + '\n';
     });
-}
-function writeFilePromise(path) {
-
-}
-
-let result = '';
-fs.readFile('07.File/tmp/from.txt','utf8',(err, data)=>{
-    const txt = data.replace(/\r/g, '').split('\n')
-    for (let i=0; i <= txt.length-1; i++) {
-        for (let k=0; k <= i; k++) {
-            result += txt[i];
-        }
-        result += '\n';
-    }
-})
-.then(fs.writeFile('07.File/tmp/to.txt', result, error => {
-    if (error)
-        console.log(error);
-    })
-)
-.then(fs.readFile('07.File/tmp/to.txt', 'utf-8', (err, data) => {
-    console.log(data);
-    })
-);
- */
-
-/* let result = '';
-result = fs.readFile('07.File/tmp/from.txt','utf8',(err, data)=>{
-    const txt = data.replace(/\r/g, '').split('\n')
-    for (let i=0; i <= txt.length-1; i++) {
-        for (let k=0; k <= i; k++) {
-            result += txt[i];
-            // console.log(result)
-        }
-        result += '\n';
-    }
+    fs.writeFile('07.File/tmp/to.txt', output, err => {
+        if (err)
+            console.log(err);
+    });
 });
-console.log(result);
-fs.writeFile('07.File/tmp/to.txt', result, error => {
-    if (error)
-        console.log(error);
-});
-
-fs.readFile('07.File/tmp/to.txt', 'utf-8', (err, data) => {
-    console.log(data);
-});
-
- */

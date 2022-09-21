@@ -29,4 +29,26 @@ async function defaultParser(url) {
         console.log(`가격: ${price}원`);
     });
 }
-defaultParser(url);
+// defaultParser(url);
+
+axios.get(url, {responseType: 'arraybuffer'})
+    .then(res => {
+        let contentType = res.headers['content-type'];
+        let charset = contentType.includes('charset=') 
+            ? contentType.split('charset=')[1]
+            : 'UTF-8';
+        let data = iconv.decode(res.data, charset);
+        const $ = cheerio.load(data);
+        $('.listItem').each((idx, elem) => {
+            let title = $(elem).find('.itemName').text().trim();
+            let author = $(elem).find('.author').text().trim();
+            let company = $(elem).find('.company').text().trim();
+            let price = $(elem).find('.price').text()
+                        .split(',').join('').replace(/[^0-9]/g,'').split('원')[0];
+            console.log(`======================${idx+1}번======================`);
+            console.log('책제목:',title);
+            console.log('저자:',author);
+            console.log('출판사:',company);
+            console.log(`가격: ${price}원`);
+        });
+    });
