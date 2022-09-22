@@ -79,3 +79,42 @@ SELECT AVG(Population) AS average FROM city WHERE CountryCode='KOR';
 
 # max min avg 다 있음
 SELECT MAX(Population), MIN(Population), AVG(Population) FROM city WHERE CountryCode='KOR'
+
+# 광역시도별 인구수를 내림차순으로
+SELECT district, SUM(Population) FROM city WHERE CountryCode='KOR'
+	GROUP BY District ORDER BY SUM(Population) DESC;
+
+# 전라남도의 도시
+SELECT GROUP_CONCAT(NAME) FROM city WHERE District='Chollanam';
+
+# 한국의 광역시도
+SELECT GROUP_CONCAT(DISTINCT district) FROM city WHERE CountryCode='KOR';
+
+# 광역시도별 도시의 개수
+SELECT district, COUNT(*) FROM city WHERE CountryCode='KOR'
+	GROUP BY district ORDER BY COUNT(*) DESC, district;
+
+
+# 광역시도별 도시의 개수가 5개 이상을 내림차순으로 정렬
+SELECT district, COUNT(*) AS `count` FROM city WHERE CountryCode='KOR'
+	GROUP BY district HAVING COUNT(*)>=5 ORDER BY COUNT(*) DESC;
+
+
+# 도시의 개수가 100개 이상인 국가를 도시개수 내림차순으로 정렬
+SELECT CountryCode, COUNT(*) FROM city 
+    GROUP BY CountryCode HAVING COUNT(*)>=100 ORDER BY COUNT(*) DESC;
+
+# 도시의 개수가 많은 5개 나라
+SELECT CountryCode, COUNT(*) FROM city 
+	GROUP BY CountryCode ORDER BY COUNT(*) DESC LIMIT 5;
+
+# 도시의 인구가 많은 10개 국가 코드
+SELECT CountryCode, sum(Population) FROM city 
+	GROUP BY CountryCode ORDER BY sum(Population) DESC 
+	LIMIT 10;
+
+# 도시의 인구가 많은 6~10위 국가 코드
+SELECT CountryCode, sum(Population) FROM city 
+	GROUP BY CountryCode ORDER BY sum(Population) DESC 
+	LIMIT 5 OFFSET 5;
+    # 5개를 건너뛴 다음 5개. 6~10위
