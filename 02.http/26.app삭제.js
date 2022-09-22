@@ -6,6 +6,7 @@ const view = require('./view/index');
 const template = require('./view/template');
 
 http.createServer((req, res) => {
+    console.log(req);
     console.log(url.parse(req.url, true));    
     let pathname = url.parse(req.url).pathname;
     let query = url.parse(req.url, true).query;
