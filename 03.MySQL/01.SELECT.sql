@@ -4,13 +4,13 @@ DESC city;      # describe. city가 어떻게 생겼는지 확인
 
 /*
 SELECT 필드명 FROM 테이블명
-    WHERE 조건
-    ORDER BY 필드명 순서
-    LIMIT 숫자 OFFSET 숫자
-    GROUP BY 필드명
-    HAVING 그룹 조건
     JOIN 테이블명
     ON 조인 조건;
+    WHERE 조건
+    GROUP BY 필드명
+    HAVING 그룹 조건
+    ORDER BY 필드명 순서
+    LIMIT 숫자 OFFSET 숫자
 */
 
 SELECT * FROM city;  # select 모든 필드 from 테이블
