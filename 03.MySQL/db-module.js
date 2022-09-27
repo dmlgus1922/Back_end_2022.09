@@ -63,5 +63,40 @@ module.exports = {
             callback();
         });
         conn.end();
+    },
+    getPlayersByPosition: function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `SELECT * FROM tigers WHERE POSITION=?;`;
+        conn.query(sql, params, (err, rows, fields) => {
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
+    },
+    getPlayersOrderByBackNo: function(params, callback) { // asc-0, desc-1
+        const order = params == 0 ? 'ASC' : 'DESC';
+        console.log(order);
+        const conn = this.getConnection();
+        let sql = `SELECT * FROM tigers WHERE isDeleted=0 
+                        ORDER BY backNO ${order};`;
+        conn.query(sql, (err, rows, fields) => {
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
+    },
+    getPlayerByOrder: function(field, order, callback) {
+        const how = order == 0 ? 'ASC' : 'DESC';
+        const conn = this.getConnection();
+        let sql = `SELECT * FROM tigers WHERE isDeleted=0 
+                        ORDER BY ${field} ${how};`;
+        conn.query(sql, (err, rows, fields) => {
+            if (err)
+                throw err;
+            callback(rows);
+        });
+        conn.end();
     }
 };
