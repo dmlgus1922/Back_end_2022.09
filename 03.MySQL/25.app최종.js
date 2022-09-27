@@ -1,26 +1,21 @@
 const http = require('http');
 const url = require('url');
-const mysql = require('mysql');
-const config = require('./mysql.json');
+const dm = require('./db-module');
+
 const template = require('./view/template');
 const qs = require('querystring');
 
 http.createServer((req, res) => {
     let pathname = url.parse(req.url).pathname;
     let query = url.parse(req.url, true).query;
-    const conn = mysql.createConnection(config);
+    
     switch(pathname) {
-        case '/':   // 초기 화면
-        conn.connect();
-        const sql = `SELECT * FROM tigers WHERE isDelseted=0`;
-        conn.query(sql, (err, rows, fields) => {
-            if (err)
-                throw err;
+    case '/':   // 초기 화면
+        dm.getList(rows => {
             const trs = template.trsGen(rows);
             const html = template.home(trs);
             res.end(html);
         });
-        conn.end();
         break;
     
     case '/create':
@@ -37,38 +32,25 @@ http.createServer((req, res) => {
                 const player = param.player;
                 const backNO = parseInt(param.backNO);
                 const position = param.position;
-
-                const conn = mysql.createConnection(config);
-                conn.connect();
-                const sql = `INSERT INTO tigers (player, backNO, position)
-                VALUES (?, ?, ?);`;
-                conn.query(sql, [player, backNO, position], (err, fields) => {
-                    if (err)
-                    throw err;
-                    
+                dm.insertPlayer([player,backNO,position], () => {
                     res.writeHead(302, {'Location':'/'});
                     res.end();
                 });
-                conn.end();
             });
         }
         break;
+    
     case '/update':
         if (req.method == 'GET') {      // 수정 입력할 form 보여주기
             const id = parseInt(query.id);
-            const conn = mysql.createConnection(config);
-            conn.connect();
-            const sql = `SELECT * FROM tigers WHERE id=? and isDeleted=0;`;
-            conn.query(sql, id, (err, rows, fields) => {
-                if (err)
-                    throw err;
+            dm.getPlayer(id, rows => {
                 const player = rows[0].player;
                 const backNO = rows[0].backNO;
                 const position = rows[0].position;
                 const html = template.updateForm(id, player, backNO, position);
                 res.end(html);
             });
-            conn.end();
+            
         } else {        // DB에 수정하기
             let body='';
             req.on('data', data => {
@@ -81,46 +63,33 @@ http.createServer((req, res) => {
                 const backNO = parseInt(param.backNO);
                 const position = param.position;
 
-                const conn = mysql.createConnection(config);
-                conn.connect();
-                const sql = `UPDATE tigers SET player=?, backNO=?, position=?
-                            WHERE id=?;`;
-                conn.query(sql, [player, backNO, position, id], (err, fields) => {
-                    if (err)
-                    throw err;
-                    
+                dm.updatePlayer([player, backNO, position, id], () => {
                     res.writeHead(302, {'Location':'/'});
                     res.end();
                 });
-                conn.end();
             });
         }
         break;
-
+    
     case '/delete':
-        const did = parseInt(query.id);
-        const html = template.deleteForm(did);
+        const id = parseInt(query.id);
+        const html = template.deleteForm(id);
         res.end(html);
         break;
+
     case '/deleteConfirm':{
         const id = parseInt(query.id);
-        const sql = `UPDATE tigers SET isDeleted=1 WHERE id=?;`; 
-        // isDeleted가 1이면 화면에 출력되지 않으므로
-        const conn = mysql.createConnection(config);
-        conn.connect();
-        conn.query(sql, id, (err, fields) => {
-            if (err)
-                throw err;
+        dm.deletePlayer(id, () => {
             res.writeHead(302, {'Location':'/'});
             res.end();
         });
-        conn.end();
         break;
         }
+
     default:    //pathname이 없을 때 
         res.writeHead(404, {'Content-Type': 'text/html'});
         res.end();
     }
 }).listen(3000, () => {
-    console.log('로컬호스트 3000');
+    console.log('Server running at http://localhost:3000');
 });
