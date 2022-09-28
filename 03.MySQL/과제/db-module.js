@@ -70,6 +70,8 @@ module.exports = {
         const conn = this.getConnection();
         const sql = `INSERT INTO girl_group (name, debut, hit_song_id)
                         VALUES (?, ?, ?);`;
+        // const sql = `INSERT INTO girl_group
+        //                 VALUES (default, ?, ?, ?);`;
         conn.query(sql, params, (err, fields) => {
             if (err)
                 throw err;
