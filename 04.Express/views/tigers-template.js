@@ -1,3 +1,7 @@
+// const express=require('express');
+// const app = express();
+// app.use(express.static(__dirname + '/public'));
+
 module.exports = {
     home : function(trs) {
         return `
@@ -7,24 +11,30 @@ module.exports = {
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
             <title>기아 타이거즈</title>
             <style>
                 th, tr {
-                    text-align : center
+                    text-align : center;
+                }
+                img {
+                    height:50px;
                 }
             </style>
+            <script src="https://kit.fontawesome.com/95a6a0adef.js" crossorigin="anonymous"></script>
         </head>
         <body style="margin:50px">
-            <h1>기아 타이거즈 선수단</h1>
+            <img src="/tigers-img/emblem.jpg" style="height: 250px;">
             <button onclick="location.href='/create'">추가</button>
             <hr>
             <table>
                 <tr>
                     <th>ID</th>
                     <th>선수명</th>
+                    <th>사진</th>
                     <th>백넘버</th>
                     <th>포지션</th>
-                    <th>액션</th>
+                    <th>수정/삭제</th>
                 </tr>
                 ${trs}
             </table>
@@ -36,9 +46,9 @@ module.exports = {
         let trs = '';
         for (let row of rows) {
             trs += '<tr>';
-            trs += `<td>${row.id}</td><td>${row.player}</td><td>${row.backNo}</td><td>${row.position}</td>`;
-            trs += `<td><a href="/update?id=${row.id}">수정</a>,
-                        <a href="/delete?id=${row.id}">삭제</a></td>`;
+            trs += `<td>${row.id}</td><td>${row.player}</td><td><img src="/tigers-img/${row.player}.jpg"></td><td>${row.backNo}</td><td>${row.position}</td>`;
+            trs += `<td><a href="/update?id=${row.id}"><i class="fa-solid fa-people-arrows"></i></a>
+                        <a href="/delete?id=${row.id}"><i class="fa-sharp fa-solid fa-user-minus"></i></a></td>`;
             trs += '</tr>';
             
         }

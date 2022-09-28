@@ -1,16 +1,13 @@
-const express=require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 
 const dm = require('./db/tigers-module');
 const template = require('./views/tigers-template');
 
-
 const app = express();
 
-// public 폴더를 static이라 하겠다..
 app.use(express.static(__dirname + '/public'));
 
-// 
 app.use(bodyParser.urlencoded({extended:false}));
 
 
