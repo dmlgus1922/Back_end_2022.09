@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include(`${path}/head`) %>
+</head>
+<body>
+    <%- include(`${path}/navbar`) %>
+
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>선수명</th>
+                <th>사진</th>
+                <th>백넘버</th>
+                <th>포지션</th>
+                <th>수정/삭제</th>
+            </tr>
+            <% for (let row of rows) { %>
+                <tr>
+                    <td><%= row.id %></td>
+                    <td><%= row.player %></td>
+                    <td><img src="/tigers-img/<%= row.player %>.jpg" height="48"></td>
+                    <td><%= row.backNo %></td>
+                    <td><%= row.position %></td>
+                    <td><a href="/update/<%= row.id %>"><i class="fa-solid fa-people-arrows"></i></a>
+                        <a href="/delete/<%= row.id %>"><i class="fa-sharp fa-solid fa-user-minus"></i></a>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</body>
+</html>
