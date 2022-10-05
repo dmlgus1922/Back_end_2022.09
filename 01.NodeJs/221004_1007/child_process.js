@@ -1,5 +1,5 @@
 const spawn = require('child_process').spawn;
-var process = spawn('python', ['./child_process.py']);
+var process = spawn('python', ['-v', '01.NodeJs\\221004_1007\\child_process.py']);
 
 process.stdout.on('data', function(data) {
     console.log(data.toString());
