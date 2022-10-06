@@ -15,6 +15,6 @@ promise
     .catch((error) => {
         console.error(error);
     })
-    .finally((abc) => {
-        console.log(abc);
+    .finally(() => {
+        console.log('Final');
     });

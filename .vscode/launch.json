@@ -12,6 +12,14 @@
                 "<node_internals>/**"
             ],
             "program": "${file}"
-        }
+        },
+        {
+            "name": "Web: debug with attach to current opened-file for web source using chrome",
+            "type": "pwa-chrome",
+            "request": "attach",
+            "port": 9222,
+            "url": "127.0.0.1:3000/relativeFileDirname/{relativeFileDirname}/relativeFileDirname/{fileBasename}",
+            "webRoot": "${workspaceFolder}"
+        },
     ]
 }
