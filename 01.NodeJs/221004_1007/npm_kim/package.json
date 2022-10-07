@@ -1,0 +1,14 @@
+{
+  "name": "npm_kim",
+  "version": "0.0.1",
+  "main": "index.js",
+  "description": "my package for test",
+  "scripts": {
+    "test": "echo"
+  },
+  "license": "MIT",
+  "author": "kim",
+  "keywords": [
+    "npm_kim"
+  ]
+}
