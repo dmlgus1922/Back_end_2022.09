@@ -7,7 +7,7 @@ Human.isHuman = function(human) {
 }
 
 Human.prototype.breath = function() {
-    alert('h-a-a-a-m');
+    console.log('h-a-a-a-m');
 }
 
 var Zero = function(type, firstname, lastname) {
@@ -19,8 +19,11 @@ var Zero = function(type, firstname, lastname) {
 Zero.prototype = Object.create(Human.prototype);
 Zero.prototype.constructor = Zero;
 Zero.prototype.sayName = function() {
-    alert(this.firstname + ' ' + this.lastname);
+    console.log(this.firstname + ' ' + this.lastname);
 }
 
 var oldZero = new Zero('human', 'Zero', 'Cho');
-Human.isHuman(oldZero);
+console.log(Human.isHuman(oldZero));
+console.log(oldZero.type);
+oldZero.breath();
+oldZero.sayName();
