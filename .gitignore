@@ -2,6 +2,7 @@
 tmp/
 mysql.json
 tmp.html
+config.json
 
 # Logs
 logs
