@@ -1,6 +1,10 @@
 const express = require('express');
+const mysql = require('mysql');
+const config = require('./mysql.json');
 
 const router = express.Router();    // express가 갖고 있는 기능 중 router를 사용
+
+let conn = mysql.createConnection(config);
 
 router.get('/plus', function(request, response) {   // plus 라우터 기능 정의 및 등록
     console.log('/plus 라우터 호출');
@@ -86,6 +90,86 @@ router.post('/Grade', (request, response)=> {
     response.write('</html>');
     response.end();
 
+});
+
+router.post('/Join', (request, response) => {
+    const id = request.body.id;
+    const pw = request.body.pw;
+    const name = request.body.name;
+    const email = request.body.email;
+    const tel = request.body.tel;
+    const gender = request.body.gender;
+    const hobby = request.body.hobby;
+    const birth = request.body.birth;
+    const color = request.body.color;
+    const country = request.body.country;
+    const talk = request.body.talk;
+
+    response.writeHead(200, {'Content-type':'text/html; charset=utf-8'});
+    
+    response.write('<html>');
+    response.write('<body>');
+
+    response.write(`ID: ${id}<br>`);
+    response.write(`NAME: ${name}<br>`);
+    response.write(`EMAIL: ${email}<br>`);
+    response.write(`TEL: ${tel}<br>`);
+    response.write(`GENDER: ${gender}<br>`);
+    response.write(`COUNTRY: ${country}<br>`);
+    response.write(`BIRTH: ${birth}<br>`);
+    response.write(`COLOR: ${color}<br>`);
+    response.write(`HOBBY: ${hobby}<br>`);
+    response.write(`TALK: ${talk}<br>`);
+
+    response.write('</body>');
+    response.write('</html>');
+
+    response.end();
+});
+
+router.post('/Login', (request, response) => {
+    const id = request.body.id;
+    const pw = request.body.pw;
+
+    // 사용자가 입력한 id가 'smart', pw가 '123'일 때 
+    // 성공 -> LoginS.html
+    // 실패 -> LoginF.html
+    if (id == 'smart' && pw == '123'){
+        response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginS.html');
+    } else {
+        response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginF.html');
+    }
+});
+
+router.post('/JoinDB', (request, response) => {
+    const id = request.body.id;
+    const pw = request.body.pw;
+    const nick = request.body.nick;
+    
+    const sql = 'insert into member values(?, ?, ?)';
+    conn.query(sql, [id, pw, nick], (err, row) => {
+        if (!err) {
+            console.log('입력 성공: ' + row);
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+        } else {
+            console.log('입력 실패: ' + err);
+        }
+    });
+});
+
+router.get('/Delete', (request, response) => {
+    const id = request.query.id;
+    const sql = 'delete from member where id=?';
+    conn.query(sql, id, (err, row) => {
+        if (!err) {
+            console.log('명령에 성공한 수: ' + row.affectedRows);
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+        } else if (row.affectedRows == 0) {
+            console.log('삭제된 값이 없습니다.');
+        } else {
+            console.log('삭제 실패: '+ err);
+        }
+    });
 });
 
 module.exports = router;

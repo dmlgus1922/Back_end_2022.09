@@ -1,11 +1,52 @@
-pm2 start [서버파일명] --watch
-    -> 서버 실행 * --watch 옵션으로 실시간으로 변하는 파일을 적용
+npx
+    pm2 start [서버파일명] --watch
+        -> 서버 실행 * --watch 옵션으로 실시간으로 변하는 파일을 적용
 
-pm2 kill
-    -> 전체 서버 파일 중지
+    pm2 kill
+        -> 전체 서버 파일 중지
 
-pm2 list
-    -> 실행되고 있는 서버 파일 확인
+    pm2 list
+        -> 실행되고 있는 서버 파일 확인
 
-pm2 monit
-    -> 실행되고 있는 서버 파일들 모니터링
+    pm2 monit
+        -> 실행되고 있는 서버 파일들 모니터링
+
+express
+
+npm init  package.json 파일 만드는 명령어 각종 옵션 설정
+npm install express --save  express 설치
+
+package-lock.json 버전을 관리
+
+config 폴더 - api 등 환경 정보 설정하는 폴더
+public 폴더 - html, css, 이미지 등 정적 파일들을 담는 폴더
+router 폴더 - 각 경로에 해당하는 작업을 할 수 있도록 하는 파일을 담는 폴더
+views 폴더 - 동적 파일을 담는 폴더
+
+power shell 관리자 권한
+Set-ExecutionPolicy RemoteSigned
+
+
+npx pm2 start app.js --watch
+
+npx pm2 list      => 실행되는 서버
+
+npx pm2 monite    => 서버 관리
+
+
+
+get, post 차이
+get: url을 통해 값을 보냄 => query string
+	1. 보안상 좋지 않음
+	2. 데이터 크기에 제한이 있음
+
+post: 패킷을 통해 데이터를 보냄
+	1. 보안에 좋음
+	2. 데이터 크기 제한이 없음
+	post 방식일 때 넘어오는 값을 받기 위해 미들웨어 등록
+
+
+MVC
+Model
+View
+Controller
