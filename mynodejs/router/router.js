@@ -1,10 +1,8 @@
 const express = require('express');
-const mysql = require('mysql');
-const config = require('./mysql.json');
 
 const router = express.Router();    // express가 갖고 있는 기능 중 router를 사용
 
-let conn = mysql.createConnection(config);
+const conn = require('../config/DBConfig.js');
 
 router.get('/plus', function(request, response) {   // plus 라우터 기능 정의 및 등록
     console.log('/plus 라우터 호출');
@@ -131,14 +129,26 @@ router.post('/Login', (request, response) => {
     const id = request.body.id;
     const pw = request.body.pw;
 
-    // 사용자가 입력한 id가 'smart', pw가 '123'일 때 
-    // 성공 -> LoginS.html
-    // 실패 -> LoginF.html
-    if (id == 'smart' && pw == '123'){
-        response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginS.html');
-    } else {
-        response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginF.html');
-    }
+    // if (id == 'smart' && pw == '123'){
+    //     response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginS.html');
+    // } else {
+    //     response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginF.html');
+    // }
+
+    const sql = 'select * from member where id=? and pw=?';
+    conn.query(sql, [id, pw], (err, row) => {
+        console.log(row, row.length);
+        if (err) {
+            console.log('검색 실패: '+ err);
+
+        } else if (row.length > 0) {
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginS.html');
+            
+        } else if (row.length == 0){
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginF.html');
+        }
+    });
+
 });
 
 router.post('/JoinDB', (request, response) => {
@@ -161,13 +171,140 @@ router.get('/Delete', (request, response) => {
     const id = request.query.id;
     const sql = 'delete from member where id=?';
     conn.query(sql, id, (err, row) => {
-        if (!err) {
+        if (err) {
+            console.log('삭제 실패: '+ err);
+
+        } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
             response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
-        } else if (row.affectedRows == 0) {
+        
+        } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-        } else {
-            console.log('삭제 실패: '+ err);
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+        }
+    });
+});
+
+router.post('/Update', (request, response) => {
+    // 사용자가 입력한 id의 pw를 변경하고 성공 후 Main.html 페이지로 이동
+    const select = request.body.select;
+    const data = request.body.data;
+    const id = request.body.id;
+    
+    // let sql;
+    // if (select =='pw'){
+    //     sql = 'update member set pw=? where id=?';
+    // } else {
+    //     sql = 'update member set nick=? where id=?';
+    // }
+    const sql = `update member set ${select}=? where id=?`;
+
+    conn.query(sql, [data, id], (err, row) => {
+        if (err) {
+            console.log('수정 실패: '+ err);
+
+        } else if (row.affectedRows > 0) {
+            console.log('명령에 성공한 수: ' + row.affectedRows);
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+        
+        } else if (row.affectedRows == 0){
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            console.log('수정된 값이 없습니다.');
+        }
+    });
+});
+
+router.get('/SelectAll', (request, response) => {
+    
+    const sql = 'select * from member';
+    
+    conn.query(sql, (err, row) => {
+        if (err) {
+            console.log('검색실패 \n', err);
+        } else if (row.length > 0) {
+
+            console.log('검색된 데이터의 수', row.length);
+            
+            
+            response.writeHead(200, {'Content-type':'text/html; charset=utf-8'});
+            response.write('<html>');
+            response.write('<body>');
+
+            response.write('<table border="1">');
+            
+            response.write('<tr>');
+
+            response.write('<th>ID</th>');
+            response.write('<th>PW</th>');
+            response.write('<th>NICK</th>');
+
+            response.write('</tr>');
+
+            for (let i=0; i<row.length; i++) {
+                response.write('<tr>');
+                response.write('<td>'+ row[i].id + '</td>');
+                response.write('<td>'+ row[i].pw + '</td>');
+                response.write('<td>'+ row[i].nick + '</td>');
+                response.write('</tr>');
+            }
+
+            response.write('</table>');
+           
+            response.write('</body>');
+            response.write('</html>');
+            response.end();
+
+        } else if (row.length == 0) {
+            console.log('검색된 데이터가 없습니다.');
+        }
+
+    });
+});
+
+router.get('/SelectOne', (request, response) => {
+    const id = request.query.id;
+    const sql = 'select * from member where id=?';
+    conn.query(sql, id, (err, row) => {
+        console.log(row, row.length);
+        if (err) {
+            console.log('검색 실패: '+ err);
+
+        } else if (row.length > 0) {
+            console.log('검색에 성공한 수: ' + row.length);
+
+            response.writeHead(200, {'Content-type':'text/html; charset=utf-8'});
+            response.write('<html>');
+            response.write('<body>');
+
+            response.write('<table border="1">');
+            
+            response.write('<tr>');
+
+            response.write('<th>ID</th>');
+            response.write('<th>PW</th>');
+            response.write('<th>NICK</th>');
+
+            response.write('</tr>');
+
+            for (let i=0; i<row.length; i++) {
+                response.write('<tr>');
+                response.write('<td>'+ row[i].id + '</td>');
+                response.write('<td>'+ row[i].pw + '</td>');
+                response.write('<td>'+ row[i].nick + '</td>');
+                response.write('</tr>');
+            }
+
+            response.write('</table>');
+           
+            response.write('</body>');
+            response.write('</html>');
+            response.end();
+
+            
+        
+        } else if (row.length == 0){
+            console.log('검색된 값이 없습니다.');
+            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
         }
     });
 });

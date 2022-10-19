@@ -3,7 +3,7 @@ tmp/
 mysql.json
 tmp.html
 config.json
-
+DBConfig.js
 # Logs
 logs
 *.log
