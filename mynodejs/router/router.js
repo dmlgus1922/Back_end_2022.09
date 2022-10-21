@@ -123,5 +123,9 @@ router.post('/Join', (request, response) => {
     response.end();
 });
 
+router.get('/Message', (request, response) => {
+    response.render('message', {
 
+    });
+});
 module.exports = router;

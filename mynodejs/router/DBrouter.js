@@ -21,8 +21,13 @@ DBrouter.post('/Login', (request, response) => {
             console.log('검색 실패: '+ err);
 
         } else if (row.length > 0) {
+
+            request.session.user = id;
+            
+            console.log('session영역에 id 저장 성공 ', request.session.user);
+
             response.render('LoginS', {
-                row_id : row[0].id
+                row_id : id
             });
             
         } else if (row.length == 0){
@@ -41,7 +46,7 @@ DBrouter.post('/JoinDB', (request, response) => {
     conn.query(sql, [id, pw, nick], (err, row) => {
         if (!err) {
             console.log('입력 성공: ' + row);
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         } else {
             console.log('입력 실패: ' + err);
         }
@@ -57,11 +62,11 @@ DBrouter.get('/Delete', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         
         } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         }
     });
 });
@@ -86,10 +91,10 @@ DBrouter.post('/Update', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         
         } else if (row.affectedRows == 0){
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
             console.log('수정된 값이 없습니다.');
         }
     });
@@ -140,7 +145,7 @@ DBrouter.get('/SelectAll', (request, response) => {
 
         } else if (row.length == 0) {
             console.log('검색된 데이터가 없습니다.');
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         }
 
     });
@@ -164,7 +169,7 @@ DBrouter.get('/SelectOne', (request, response) => {
         
         } else if (row.length == 0){
             console.log('검색된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         }
     });
 });
@@ -182,9 +187,23 @@ DBrouter.get('/SelectDelete', (request, response) => {
         
         } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:5500/mynodejs/public/ex06Main.html');
+            response.redirect('http://127.0.0.1:3000/Main');
         }
     });
 });
+
+DBrouter.get('/Main', (request, response) => {
+    response.render('Main', {
+        id : request.session.user
+    });
+});
+
+DBrouter.get('/Logout', (request, response) => {
+    delete request.session.user
+    response.render('Main', {
+        id : request.session.user
+    });
+});
+
 
 module.exports = DBrouter;
