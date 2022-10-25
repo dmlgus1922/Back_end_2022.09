@@ -23,7 +23,7 @@ let conn_session = new mysql_session(conn);
 app.use(session({
     secret : 'smart',
     resave : false, // 저장
-    saveUninitialized : true,   // 초기화
+    saveUninitialized : true,   // 초기화. 세션에 저장할 내역이 없더라도 처음부터 세션을 생성할지 설정
     store : conn_session    // 저장할 곳
 })); // 미들웨어로 session 기능 등록
 

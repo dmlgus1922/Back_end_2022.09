@@ -19,10 +19,20 @@
                         <td>Email</td>
                         <td>HP</td>
                         <td>Addr</td>
-                                <td>삭제여부</td>
+                        <td>삭제여부</td>
                      </tr>
-                     <%
-                     %>
+                     <!-- row_name 안에 있는 데이터 출력 -->
+                     <% for (let row of row_name) { %>
+                     <tr>
+                        <td><%= row.email %></td>
+                        <td><%= row.tel %></td>
+                        <td><%= row.address %></td>
+                        <td><a href="http://127.0.0.1:3000/MessageDelete?email=<%= row.email %>">삭제</a></td>
+                        <!-- MessageDelete라우터 생성, 클릭한 이메일의 정보 삭제,
+                            삭제 후 selectMember.ejs로 이동 -->
+                     </tr>
+                     <% } %>
+                     
                   </table>
                </nav>
          </div>
