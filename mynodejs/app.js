@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 
 let conn = require('./config/config.json');
 
-let conn_session = new mysql_session(conn);     
+let conn_session = new mysql_session(conn);
 
 app.use(session({
     secret : 'smart',

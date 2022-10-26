@@ -123,4 +123,26 @@ router.post('/Join', (request, response) => {
     response.end();
 });
 
+router.get('/ex01', (req, res) => {
+    const name = req.query.name;
+    const season = req.query.season;
+
+    // 세션 등록하기
+    req.session.user = {
+        name : name
+    }
+    console.log(req.session.user.name)
+
+    res.render('test01', {
+        name: name,
+        season : season
+    });
+});
+
+router.get('/ex02', (req, res) => {
+    // console.log('ex02 router');
+    delete req.session.user;
+
+});
+
 module.exports = router;
