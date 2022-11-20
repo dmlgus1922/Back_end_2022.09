@@ -46,7 +46,7 @@ DBrouter.post('/JoinDB', (request, response) => {
     conn.query(sql, [id, pw, nick], (err, row) => {
         if (!err) {
             console.log('입력 성공: ' + row);
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         } else {
             console.log('입력 실패: ' + err);
         }
@@ -62,11 +62,11 @@ DBrouter.get('/Delete', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         
         } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         }
     });
 });
@@ -91,10 +91,10 @@ DBrouter.post('/Update', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         
         } else if (row.affectedRows == 0){
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
             console.log('수정된 값이 없습니다.');
         }
     });
@@ -133,7 +133,7 @@ DBrouter.get('/SelectAll', (request, response) => {
             //     response.write('<td>'+ row[i].id + '</td>');
             //     response.write('<td>'+ row[i].pw + '</td>');
             //     response.write('<td>'+ row[i].nick + '</td>');
-            //     response.write(`<td><a href="http://127.0.0.1:3000/SelectDelete?id=${row[i].id}">삭제</a></td>`);
+            //     response.write(`<td><a href="http://127.0.0.1:3001/SelectDelete?id=${row[i].id}">삭제</a></td>`);
             //     response.write('</tr>');
             // }
 
@@ -145,7 +145,7 @@ DBrouter.get('/SelectAll', (request, response) => {
 
         } else if (row.length == 0) {
             console.log('검색된 데이터가 없습니다.');
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         }
 
     });
@@ -169,7 +169,7 @@ DBrouter.get('/SelectOne', (request, response) => {
         
         } else if (row.length == 0){
             console.log('검색된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         }
     });
 });
@@ -183,11 +183,11 @@ DBrouter.get('/SelectDelete', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:3000/SelectAll');
+            response.redirect('http://127.0.0.1:3001/SelectAll');
         
         } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:3000/Main');
+            response.redirect('http://127.0.0.1:3001/Main');
         }
     });
 });

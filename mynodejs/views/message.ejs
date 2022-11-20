@@ -25,10 +25,10 @@
 							<% } else { %>
 								<!-- admin 계정만 볼 수 있는 회원정보관리 링크를 만들기-->
 								<% if (user.email == 'admin') { %>
-									<a href="http://127.0.0.1:3000/MessageMemberSelect">전체회원정보관리</a>
+									<a href="http://127.0.0.1:3001/MessageMemberSelect">전체회원정보관리</a>
 								<% } %>
-								<a href="http://127.0.0.1:3000/MessageUpdate">회원정보 수정</a>
-								<a href="http://127.0.0.1:3000/MessageLogout">로그아웃</a>
+								<a href="http://127.0.0.1:3001/MessageUpdate">회원정보 수정</a>
+								<a href="http://127.0.0.1:3001/MessageLogout">로그아웃</a>
 							<% } %>
 							<!-- 1. Logout라우터를 만들고 실행 후 email 세션값을 삭제시키시오. 
 							     2. 원래 Message페이지를 랜더링 하시오.-->
@@ -39,7 +39,7 @@
 					<nav id="menu">	
 						<ul class="links">
 							<li><h5>로그인</h5></li>
-								<form action="http://127.0.0.1:3000/MessageLogin" method="post">
+								<form action="http://127.0.0.1:3001/MessageLogin" method="post">
 									<li><input name="email" type="text" placeholder="Email을 입력하세요"></li>
 									<li><input name="pw" type="password" placeholder="PW를 입력하세요"></li>
 									<li><input type="submit" value="LogIn" class="button fit"></li>
@@ -47,7 +47,7 @@
 						</ul>
 						<ul class="actions vertical">
 							<li><h5>회원가입</h5></li>
-								<form action="http://127.0.0.1:3000/MessageJoin" method="post">
+								<form action="http://127.0.0.1:3001/MessageJoin" method="post">
 									<li><input name="email" type="text" placeholder="Email을 입력하세요"></li>
 									<li><input name="pw" type="password" placeholder="PW를 입력하세요"></li>
 									<li><input name="tel" type="text" placeholder="전화번호를 입력하세요"></li>
@@ -167,7 +167,7 @@
 					<section id="contact">
 						<div class="inner">
 							<section>
-								<form action="http://127.0.0.1:3000/MessageSend" method="post">
+								<form action="http://127.0.0.1:3001/MessageSend" method="post">
 								<div class="field half first">
 										<label for="name">Name</label>
 										<input type="text" name="send" id="name" placeholder="보내는 사람 이름" />

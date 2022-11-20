@@ -37,5 +37,5 @@ app.use(EJSrouter);
 app.use(Sessionrouter);
 app.use(Messagerouter);
 
-app.listen(3000);   // 현재 서버 파일의 port번호 등록
+app.listen(3001);   // 현재 서버 파일의 port번호 등록
 

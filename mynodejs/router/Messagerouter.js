@@ -26,7 +26,7 @@ Messagerouter.get('/MessageLogout', (request, response) => {
     
     delete request.session.user;
 
-    response.redirect('http://127.0.0.1:3000/message')
+    response.redirect('http://127.0.0.1:3001/message')
 });
 
 Messagerouter.post('/MessageJoin', (request, response) => {
@@ -39,7 +39,7 @@ Messagerouter.post('/MessageJoin', (request, response) => {
     conn.query(sql, [email, pw, tel, address], (err, row) => {
         if (!err) {
             console.log('입력 성공: ' + row);
-            response.redirect('http://127.0.0.1:3000/Message');
+            response.redirect('http://127.0.0.1:3001/Message');
         } else {
             console.log('입력 실패: ' + err);
         }
@@ -69,7 +69,7 @@ Messagerouter.post('/MessageLogin', (request, response) => {
             };
             console.log(row);
             
-            response.redirect('http://127.0.0.1:3000/Message');
+            response.redirect('http://127.0.0.1:3001/Message');
             
         } else if (row.length == 0){
             response.redirect('http://127.0.0.1:5500/mynodejs/public/ex05LoginF.html');
@@ -94,7 +94,7 @@ Messagerouter.post('/MessageUpdateExe', (request, response) => {
     // 사용자가 입력한 pw, tel, address로 email의 정보를 수정하시오.
     const sql = 'update web_member set pw=?, tel=?, address=? where email=?';
     conn.query(sql, [pw, tel, address, email], (err, row) => {
-        console.log(row);
+        console.log('여기',row);
         if (err) {
             console.log(err);
         } else {
@@ -104,9 +104,11 @@ Messagerouter.post('/MessageUpdateExe', (request, response) => {
                 'tel' : tel,
                 'address' : address,
             };
-            response.render('message', {
-                user: request.session.user
-            });
+            // response.render('message', {
+            //     user: request.session.user,
+            
+            // });
+            response.redirect('http://127.0.0.1:3001/Message');
         }
     });
 });
@@ -127,7 +129,7 @@ Messagerouter.get('/MessageMemberSelect', (request, response) => {
             });
             
         } else if (row.length == 0){
-            response.redirect('http://127.0.0.1:3000/Message');
+            response.redirect('http://127.0.0.1:3001/Message');
         }
     })
 });
@@ -141,11 +143,11 @@ Messagerouter.get('/MessageDelete', (request, response) => {
 
         } else if (row.affectedRows > 0) {
             console.log('명령에 성공한 수: ' + row.affectedRows);
-            response.redirect('http://127.0.0.1:3000/MessageMemberSelect');
+            response.redirect('http://127.0.0.1:3001/MessageMemberSelect');
         
         } else if (row.affectedRows == 0){
             console.log('삭제된 값이 없습니다.');
-            response.redirect('http://127.0.0.1:3000/MessageMemberSelect');
+            response.redirect('http://127.0.0.1:3001/MessageMemberSelect');
         }
     });
 });
@@ -159,7 +161,7 @@ Messagerouter.post('/MessageSend', (request, response) => {
     conn.query(sql, [send, rec, content], (err, row) => {
         if (!err) {
             console.log('입력 성공: ' + row);
-            response.redirect('http://127.0.0.1:3000/Message');
+            response.redirect('http://127.0.0.1:3001/Message');
         } else {
             console.log('입력 실패: ' + err);
         }
